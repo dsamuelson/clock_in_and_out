@@ -15,6 +15,24 @@ export const QUERY_ME = gql`
           _id
           username
           email
+          hoursWorked {
+            _id
+            clockedInTime
+            clockedOutTime
+            forDate
+            payAmount
+          }
+          clockedIn
+          payAmount
+          currentHWId
+      }
+    }
+`;
+
+export const QUERY_DB_SALARY = gql`
+    {
+      me {
+        payAmount
       }
     }
 `;

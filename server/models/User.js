@@ -21,12 +21,18 @@ const userSchema = new Schema(
             required: true,
         },
         clockedIn: {
-            type: Boolean
+            type: Boolean,
+            dafault: false
         },
         payAmount: {
             type: String,
+            default: "0.00"
         },
-        hoursWorked: [WorkingHoursSchema]
+        hoursWorked: [WorkingHoursSchema],
+        currentHWId: {
+            type: String,
+            required: false
+        }
     },
     {
         toJSON: {

@@ -5,6 +5,10 @@ const WorkingHoursSchema = new Schema ({
         type: String,
         required: false
     },
+    payAmount: {
+        type: String,
+        default: "0.00"
+    },
     clockedOutTime: {
         type: String,
         required: false

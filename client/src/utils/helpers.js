@@ -4,8 +4,8 @@ export function idbPromise(storeName, method, object) {
       let db, tx, store;
       request.onupgradeneeded = function(e) {
         const db = request.result;
-        db.createObjectStore('incomes', { keyPath: '_id' });
-        db.createObjectStore('expenses', { keyPath: '_id' });
+        db.createObjectStore('hoursWorked', { keyPath: '_id' });
+        db.createObjectStore('clockedIn', { keyPath: '_id' });
       };
   
       request.onerror = function(e) {

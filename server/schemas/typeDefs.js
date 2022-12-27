@@ -2,9 +2,11 @@ const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
 type WorkingHoursT {
+    _id: ID
     clockedInTime: String
     clockedOutTime: String
     forDate: String
+    payAmount: String
 }
 
 type User {
@@ -14,6 +16,7 @@ type User {
     clockedIn: Boolean
     payAmount: String
     hoursWorked: [WorkingHoursT]
+    currentHWId: String
 }
 
 type Auth {
@@ -30,8 +33,11 @@ type Query {
 type Mutation {
     createUser(email: String!, username: String!, password: String!): Auth
     login(username: String! password: String!): Auth
-    clockIn(clockedInTime: String, forDate: String): User
-    clockOut(clockedId: String, clockedOutTime: String)
+    clockIn(clockedInTime: String!, dbSalary: String!): User
+    clockOut(clockedId: String!, clockedOutTime: String!): User
+    addSalary(salary: String!): User
+    deleteWorkHours(refId: String!): User
+    deleteHWHistory: User
 }
 `;
 

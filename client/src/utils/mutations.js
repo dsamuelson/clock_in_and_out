@@ -33,14 +33,9 @@ export const ADD_USER = gql`
 `;
 
 export const CLOCK_IN = gql`
-  mutation clockIn($clockedInTime: String!, $forDate: String!){
-    clockIn(clockedInTime: $clockedInTime, forDate: $forDate) {
+  mutation clockIn($clockedInTime: String!, $dbSalary: String!) {
+    clockIn(clockedInTime: $clockedInTime, dbSalary: $dbSalary) {
       _id
-      hoursWorked {
-        _id
-        clockedInTime
-        forDate
-      }
     }
   }
 `;
@@ -52,6 +47,31 @@ export const CLOCK_OUT = gql`
       hoursWorked {
         clockedOutTime
       }
+    }
+  }
+`;
+
+export const ADD_SALARY = gql`
+  mutation addSalary($salary: String!){
+    addSalary(salary: $salary) {
+      _id
+      payAmount
+    }
+  }  
+`;
+
+export const DELETE_HOURS = gql`
+  mutation deleteWorkHours($refId: String!) {
+    deleteWorkHours(refId: $refId) {
+      _id
+    }
+  }
+`;
+
+export const CLEAR_HISTORY = gql`
+  mutation deleteHWHistory {
+    deleteHWHistory {
+      _id
     }
   }
 `;

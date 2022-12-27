@@ -5,7 +5,6 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
     Query: {
         getSingleUser: async (parent, {username}) => {
-          console.log(username)
             const userData = await User.findOne({username})
                 .select('-__v -password')
                 .populate('hoursWorked')
@@ -57,18 +56,63 @@ const resolvers = {
           const token = signToken(user);
           return { token, user };
         },
-        clockIn: async (parent, args) => {
+        clockIn: async (parent, args, context) => {
           if (context.user) {
-            const updatedUser = await User.findOneAndUpdate(
+            var updatedUser = await User.findOneAndUpdate(
               {_id: context.user._id },
-              { clockedIn: true,
+              { 
+                clockedIn: true,
                 $push: {
                   hoursWorked: {
                     clockedInTime: args.clockedInTime,
-                    forDate: args.forDate
+                    payAmount: args.dbSalary,
+                    forDate: new Date(parseInt(args.clockedInTime)).toDateString()
                   },
                 },
               },
+              {new: true}
+            )
+            .select('-__v -password')
+            updatedUser = await User.findOneAndUpdate(
+              {_id: context.user._id },
+              {
+                currentHWId: updatedUser.hoursWorked[updatedUser.hoursWorked.length - 1]._id.toString()
+              },
+              {new: true}
+            )
+            return updatedUser;
+          }
+          throw new AuthenticationError('You must be Logged In')
+        },
+        clockOut: async (parent, args, context) => {
+          if (context.user) {
+            var updatedUser = await User.findOneAndUpdate(
+              { _id: context.user._id},
+              { clockedIn: false,
+                currentHWId: 'none'},
+              {new: true}
+            )
+            .select('-__v -password')
+            
+            updatedUser = await User.findOneAndUpdate(
+              {_id: context.user._id, "hoursWorked._id": args.clockedId},
+              {
+                  "hoursWorked.$.clockedOutTime": args.clockedOutTime
+              },
+              {new: true}
+              )
+              .select('-__v -password')
+
+            return updatedUser;
+          }
+
+          throw new AuthenticationError('You must be Logged In')
+        },
+        addSalary: async (parent, args, context) => {
+          if (context.user) {
+            const updatedUser = await User.findOneAndUpdate(
+              {_id: context.user._id},
+              { payAmount: args.salary},
               {new: true}
             )
             .select('-__v -password')
@@ -78,27 +122,39 @@ const resolvers = {
           }
           throw new AuthenticationError('You must be Logged In')
         },
-        clockOut: async (parent, args) => {
+        deleteWorkHours: async (parent, args, context) => {
           if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
-              { _id: context.user._id, "hoursWorked._id": args.clockedId},
+              {_id: context.user._id},
               {
-                clockedIn: false,
-                $push: {
-                  hoursWorked: {
-                    clockedOutTime: args.clockedOutTime
-                  }
+                $pull: {
+                  hoursWorked: {_id: args.refId}
                 }
               },
-              {new: true}
+              { new: true}
             )
             .select('-__v -password')
-            .populate('hoursWorked')
 
             return updatedUser;
           }
+          throw new AuthenticationError("You must be logged in")
+        },
+        deleteHWHistory: async (parent, args, context) => {
+          if (context.user) {
+            const updatedUser = await User.findOneAndUpdate(
+              {_id: context.user._id},
+              {
+                $set:{
+                  hoursWorked: []
+                }
+              },
+              { new: true}
+            )
+            .select('-__v -password')
 
-          throw new AuthenticationError('You must be Logged In')
+            return updatedUser;
+          }
+          throw new AuthenticationError("You must be logged in")
         }
     }
 };

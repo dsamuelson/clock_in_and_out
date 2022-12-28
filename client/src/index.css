@@ -5,9 +5,149 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: white(39, 0, 39);
+  color: black;
+  background-image: linear-gradient(175deg, rgb(95, 95, 241) 30%, lightBlue, white 90%);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.headerBar .clockinandout-Title a {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-decoration: none;
+  color: rgb(0, 0, 151);
+}
+
+.headerBar nav ul {
+  position: absolute;
+  list-style: none;
+  margin-right: 5px;
+  top: 0;
+  right: 0;
+}
+
+.headerBar nav ul li a {
+  color: white;
+}
+
+.bodyTop {
+  height: 94vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.displayArea{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.salaryCont {
+  display: flex;
+  flex-direction: column;
+}
+
+.salaryCont div {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.salaryCont button {
+  width: 60px;
+  height: 26px;
+  align-self: center;
+  background-color: red;
+  border: 1px white solid;
+  border-radius: 50%;
+  color: white;
+}
+
+.clockInButton {
+  height: 100px;
+  width: 100px;
+  font-weight: bolder;
+  background-color: green;
+  color: white;
+  border: 3px yellowgreen solid;
+  border-radius: 50%;
+}
+
+.clockOutButton {
+  height: 100px;
+  width: 100px;
+  font-weight: bolder;
+  background-color: rgb(170, 1, 1);
+  color: white;
+  border: 3px red solid;
+  border-radius: 50%;
+}
+
+.tablesCont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.totalsTable {
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.totalsTable thead tr th {
+  border: 1px solid yellowgreen;
+  padding: 3px;
+  background-color: rgb(4, 4, 128);
+  color: white;
+}
+
+.totalsTable tbody tr td {
+  border: 1px solid yellowgreen;
+}
+
+.histTable {
+  text-align: center;
+}
+
+.histTable table {
+  margin-top: 5px;
+  border-collapse: collapse;
+}
+
+.histTable table thead tr th {
+  border: 1px solid lightblue;
+  background-color: rgb(4, 4, 128);
+  padding: 3px;
+  color: white;
+}
+
+.histTable table tbody tr td {
+  border: 1px solid lightblue;
+}
+
+.clearHistButton {
+  margin-top: 30px;
+  height: 50px;
+  background-color: red;
+  border: 2px rgb(255, 255, 255) dashed;
+  color: white;
+}
+
+html, .mainBody {
+  height: 100%;
+}
+
+.Footer {
+  margin-top: 10px;
+  flex-shrink: 0;
+  width: 100%;
+  color: darkblue;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  background: linear-gradient(170deg, white, lightblue 50%, blue);
 }

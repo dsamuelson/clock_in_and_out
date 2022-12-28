@@ -5,15 +5,9 @@ import { CLEAR_HISTORY } from "../../utils/mutations";
 function HistoryTable(props) {
     const [ useProps, setProps] = useState(props)
 
-    const [ clearHistory ] = useMutation(CLEAR_HISTORY)
-
     useEffect(() => {
         setProps(props.histData)
     }, [props])
-
-    useEffect(() => {
-        console.log(useProps)
-    }, [useProps, setProps])
 
     return (
         <div className="histTable">
@@ -35,15 +29,14 @@ function HistoryTable(props) {
                                     <td>{field.forDate}</td>
                                     <td>{new Date(parseInt(field.clockedInTime)).toLocaleTimeString()}</td>
                                     <td>{new Date(parseInt(field.clockedOutTime)).toLocaleTimeString()}</td>
-                                    <td>{field.clockedOutTime? ((parseInt(field.clockedOutTime) - parseInt(field.clockedInTime))/(1000 * 60 * 60)).toFixed(2) : 'TBD'}</td>
-                                    <td>{field.clockedOutTime? (((parseInt(field.clockedOutTime) - parseInt(field.clockedInTime))/(1000 * 60 * 60)) * parseInt(field.payAmount)).toFixed(2) : 'TBD'}</td>
+                                    <td>{field.clockedOutTime? field.workedTime : 'TBD'}</td>
+                                    <td>{field.clockedOutTime? field.paidTime : 'TBD'}</td>
                                 </tr>    
                             // </React.Fragment>
                         )
                     }) : null}
                 </tbody>
             </table>
-            <button onClick={(e) => {e.preventDefault(); clearHistory(); setProps(props)}}>Clear History</button>
         </div>
     )
 }

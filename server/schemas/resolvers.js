@@ -66,7 +66,7 @@ const resolvers = {
                   hoursWorked: {
                     clockedInTime: args.clockedInTime,
                     payAmount: args.dbSalary,
-                    forDate: new Date(parseInt(args.clockedInTime)).toDateString()
+                    forDate: new Date(parseInt(args.clockedInTime)).toLocaleDateString()
                   },
                 },
               },
@@ -144,9 +144,11 @@ const resolvers = {
             const updatedUser = await User.findOneAndUpdate(
               {_id: context.user._id},
               {
+                clockedIn: false,
                 $set:{
                   hoursWorked: []
-                }
+                },
+                currentHWId: 'none'
               },
               { new: true}
             )

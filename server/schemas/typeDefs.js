@@ -7,6 +7,8 @@ type WorkingHoursT {
     clockedOutTime: String
     forDate: String
     payAmount: String
+    workedTime: Float
+    paidTime: Float
 }
 
 type User {
@@ -17,6 +19,8 @@ type User {
     payAmount: String
     hoursWorked: [WorkingHoursT]
     currentHWId: String
+    totalTime: Float
+    totalPay: Float
 }
 
 type Auth {

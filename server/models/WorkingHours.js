@@ -24,4 +24,21 @@ const WorkingHoursSchema = new Schema ({
     }
 })
 
+WorkingHoursSchema.virtual('workedTime').get(function () {
+    if (this.clockedOutTime) {
+        let wt = ((parseInt(this.clockedOutTime) - parseInt(this.clockedInTime)) / (1000 * 60 * 60)).toFixed(2)
+        return wt
+    }
+    return 0.00
+})
+
+WorkingHoursSchema.virtual('paidTime').get(function () {
+    if (this.clockedOutTime) {
+        let wt = parseFloat(((parseInt(this.clockedOutTime) - parseInt(this.clockedInTime)) / (1000 * 60 * 60)).toFixed(2))
+        let pt = parseFloat((parseFloat(this.payAmount) *  wt).toFixed(2))
+        return pt
+    }
+    return 0.00
+})
+
 module.exports = WorkingHoursSchema;

@@ -53,6 +53,18 @@ userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
 };
 
+userSchema.virtual('totalPay').get(function () {
+    let tp = 0.00
+    this.hoursWorked.forEach(element => {tp += (element.paidTime || 0.00)})
+    return tp
+})
+
+userSchema.virtual('totalTime').get(function () {
+    let tt = 0.00
+    this.hoursWorked.forEach(element => {tt += (parseFloat((parseFloat(element.workedTime)).toFixed(2)) || 0.00)})
+    return tt
+})
+
 const User = model('User', userSchema);
 
 module.exports = User;

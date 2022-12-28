@@ -21,10 +21,14 @@ export const QUERY_ME = gql`
             clockedOutTime
             forDate
             payAmount
+            workedTime
+            paidTime
           }
           clockedIn
           payAmount
           currentHWId
+          totalPay
+          totalTime
       }
     }
 `;

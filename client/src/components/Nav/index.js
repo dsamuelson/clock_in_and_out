@@ -37,7 +37,7 @@ function Nav() {
         <header className="headerBar">
         <h1 className="clockinandout-Title">
             <Link to="/">
-            Clock In, Clock Out
+            In & Out
             </Link>
         </h1>
         <nav>

@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_DB_SALARY } from '../utils/queries';
-import { ADD_SALARY, CLOCK_IN, CLOCK_OUT } from '../utils/mutations';
+import { ADD_SALARY, CLOCK_IN, CLOCK_OUT, CLEAR_HISTORY } from '../utils/mutations';
 import HistoryTable from '../components/History';
 
 
 const Home = () => {
-    const [salary, setSalary] = useState(0.00)
-    const [clockedIn, setClockedIn] = useState(false)
-    const [inTime, setInTime] = useState()
+    const [ salary, setSalary] = useState(0.00)
+    const [ clockedIn, setClockedIn] = useState(false)
     const [ currentClockedInId, setCurrentClockedInId ] = useState('')
-    const [outTime, setOutTime] = useState()
-    const [hoursInDay, setHoursInDay ] = useState(0);
     const [ dailyEarnings, setDailyEarnings ] = useState(0)
     const [ tableData, setTableData ] = useState([])
+    const [ totalHours, setTotalHours] = useState(0.00)
+    const [ totalEarnings, setTotalEarnings ] = useState(0.00)
 
     const [ sendDBSalary ] = useMutation(ADD_SALARY)
     const [ sendClockIn ] = useMutation(CLOCK_IN)
     const [ sendClockOut ] = useMutation(CLOCK_OUT)
+    const [ clearHistory ] = useMutation(CLEAR_HISTORY)
+
     const { loading: dbSalaryLoading, data: dbSalary, refetch: dbSalaryRefetch } = useQuery(QUERY_DB_SALARY)
     const { loading: dbMeLoading, data: dbMeData, refetch: dbMeDataRefetch} = useQuery(QUERY_ME);
 
@@ -70,40 +71,28 @@ const Home = () => {
     }, [dbSalaryLoading, dbSalary])
 
     useEffect(() => {
+        dbMeDataRefetch()
         if (!dbMeLoading) {
             setClockedIn(dbMeData.me.clockedIn)
             setTableData([dbMeData.me.hoursWorked])
+            setTotalHours(parseFloat(dbMeData.me.totalTime.toFixed(2)))
+            setTotalEarnings(parseFloat(dbMeData.me.totalPay.toFixed(2)))
             if(dbMeData.me.currentHWId) {
                 setCurrentClockedInId(dbMeData.me.currentHWId)
                 if (dbMeData.me.hoursWorked.length !== 0){
-                    if (dbMeData.me.currentHWId !== "none") {
-                        setInTime(new Date(parseInt(dbMeData.me.hoursWorked[dbMeData.me.hoursWorked.length -1].clockedInTime)))
-                    } else {
-                        setOutTime(new Date(parseInt(dbMeData.me.hoursWorked[dbMeData.me.hoursWorked.length -1].clockedOutTime)))
-                    }
+                    setDailyEarnings(dbMeData.me.hoursWorked[dbMeData.me.hoursWorked.length -1].paidTime)
                 }
             }
         }
     }, [dbMeData, dbMeLoading, dbMeDataRefetch])
 
-    useEffect(() => {
-        if (inTime && outTime) {
-            setHoursInDay((outTime.getTime() - inTime.getTime()) / (1000 * 60 * 60))
-        }
-    }, [outTime, setOutTime])
-
-    useEffect(() => {
-        setDailyEarnings(parseFloat((salary * hoursInDay).toFixed(2)))
-    }, [hoursInDay, setHoursInDay])
-
   return (
-    <div>
-        <section>
+    <div className='displayArea'>
+        <section className='salaryCont'>
             <h2>Salary/Per Hour</h2>
             {!dbSalaryLoading && salary? (
                 <div>
-                    <h3>{salary} per hour</h3>
-                    <button onClick={e => {e.preventDefault() ; setSalary()}}>change</button>
+                    <h3 onClick={e => {e.preventDefault() ; setSalary()}}>{salary} per hour</h3>
                 </div>
                 
             ) : (
@@ -113,20 +102,35 @@ const Home = () => {
                 </form>
             )} 
         </section>
-        <section>
+        <section className='clockedInCont'>
         {clockedIn? (
-            <button onClick={() => {setClockedIn(false); handleClockOut(new Date())}}>Clock Out</button>
+            <button onClick={() => {setClockedIn(false); handleClockOut(new Date())}} className='clockOutButton'>Clock Out</button>
         ) : (
-            <button onClick={() => {setClockedIn(true); handleClockIn(new Date())}}>Clock In</button>
+            <button onClick={() => {setClockedIn(true); handleClockIn(new Date())}}className='clockInButton'>Clock In</button>
         )}
         </section>
-        <section>
+        <section className='earningsCont'>
             {dailyEarnings? (
                 <h3>You've Earned ${dailyEarnings} for this Time</h3>
             ) : ( <h4>No clock In or clock out data yet</h4> )}
         </section>
-        <section>
+        <section className='tablesCont'>
+            <table className='totalsTable'>
+                <thead>
+                    <tr>
+                        <th>Total Hours Worked</th>
+                        <th>Total Pay Recieved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{totalHours} hours</td>
+                        <td>${totalEarnings}</td>
+                    </tr>
+                </tbody>
+            </table>
             <HistoryTable histData={tableData}/>
+            <button onClick={(e) => {e.preventDefault(); clearHistory(); dbMeDataRefetch()}} className='clearHistButton'>Clear History</button>
         </section>
     </div>
   );

@@ -34,6 +34,7 @@ code {
 }
 
 .bodyTop {
+  overflow: hidden;
   height: 94vh;
   display: flex;
   flex-direction: column;
@@ -99,18 +100,20 @@ code {
 }
 
 .totalsTable thead tr th {
-  border: 1px solid yellowgreen;
+  border: 1px solid lightblue;
   padding: 3px;
   background-color: rgb(4, 4, 128);
   color: white;
 }
 
 .totalsTable tbody tr td {
-  border: 1px solid yellowgreen;
+  border: 1px solid lightblue;
 }
 
 .histTable {
   text-align: center;
+  overflow: scroll;
+  max-height: 50%;
 }
 
 .histTable table {

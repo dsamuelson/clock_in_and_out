@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { CLEAR_HISTORY } from "../../utils/mutations";
 
 function HistoryTable(props) {
     const [ useProps, setProps] = useState(props)

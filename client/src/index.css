@@ -10,6 +10,10 @@ body {
   background-image: linear-gradient(175deg, rgb(95, 95, 241) 30%, lightBlue, white 90%);
 }
 
+.histTable::-webkit-scrollbar {
+  display: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -25,12 +25,17 @@ const Home = () => {
 
     const { loading: dbMeLoading, data: dbMeData, refetch: dbMeDataRefetch} = useQuery(QUERY_ME);
 
+    let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
     const handleSalarySubmit = async (salaryAmount) => {
         dbMeDataRefetch()
         try {
             await sendDBSalary({
                 variables: {
-                    salary: salaryAmount.toString() || "0.00"
+                    salary: USDollar.format(salaryAmount).toString() || "0.00"
                 }
             });
         } catch (e) {
@@ -45,7 +50,8 @@ const Home = () => {
             await sendClockIn({
                 variables: {
                     clockedInTime: dbInTime.getTime().toString(),
-                    dbSalary: parseFloat(salary).toFixed(2)
+                    dbSalary: parseFloat(salary).toFixed(2),
+                    userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
                 }
             });
         } catch (e) {
@@ -73,6 +79,7 @@ const Home = () => {
         dbMeDataRefetch()
         if (!dbMeLoading) {
             if (dbMeData.me) {
+                console.log(dbMeData.me.totalTime, dbMeData.me.totalPay)
                 idbPromise('clockedinandout_user', 'put', dbMeData.me)
                 setSalary(dbMeData.me.payAmount)
                 setClockedIn(dbMeData.me.clockedIn)
@@ -88,6 +95,10 @@ const Home = () => {
             }
         }
     }, [dbMeData, dbMeLoading, dbMeDataRefetch])
+
+    useEffect(() => {
+        console.log(totalHours, totalEarnings)
+    },[totalHours, totalEarnings, setTotalEarnings, setTotalHours])
 
     if (loggedIn) {
         return (

@@ -13,6 +13,10 @@ const WorkingHoursSchema = new Schema ({
         type: String,
         required: false
     },
+    userTimeZone: {
+        type: String,
+        required: false
+    },
     forDate: {
         type: String,
         required: false

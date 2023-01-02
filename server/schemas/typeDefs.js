@@ -5,6 +5,7 @@ type WorkingHoursT {
     _id: ID
     clockedInTime: String
     clockedOutTime: String
+    userTimeZone: String
     forDate: String
     payAmount: String
     workedTime: Float
@@ -37,7 +38,7 @@ type Query {
 type Mutation {
     createUser(email: String!, username: String!, password: String!): Auth
     login(username: String! password: String!): Auth
-    clockIn(clockedInTime: String!, dbSalary: String!): User
+    clockIn(clockedInTime: String!, dbSalary: String!, userTimeZone: String!): User
     clockOut(clockedId: String!, clockedOutTime: String!): User
     addSalary(salary: String!): User
     deleteWorkHours(refId: String!): User

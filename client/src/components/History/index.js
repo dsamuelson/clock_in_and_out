@@ -25,8 +25,8 @@ function HistoryTable(props) {
                             // <React.Fragment key={field._id}>
                                 <tr key={field._id}>
                                     <td>{field.forDate}</td>
-                                    <td>{new Date(parseInt(field.clockedInTime)).toLocaleTimeString()}</td>
-                                    <td>{new Date(parseInt(field.clockedOutTime)).toLocaleTimeString()}</td>
+                                    <td>{new Date(parseInt(field.clockedInTime)).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</td>
+                                    <td>{new Date(parseInt(field.clockedOutTime)).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</td>
                                     <td>{field.clockedOutTime? field.workedTime : 'TBD'}</td>
                                     <td>{field.clockedOutTime? field.paidTime : 'TBD'}</td>
                                 </tr>    

@@ -21,6 +21,7 @@
     "react-datepicker": "^4.8.0"
   },
   "scripts": {
+    "startDev": "react-scripts start",
     "start": "PORT=3010 react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",

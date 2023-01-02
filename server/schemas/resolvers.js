@@ -66,7 +66,7 @@ const resolvers = {
                   hoursWorked: {
                     clockedInTime: args.clockedInTime,
                     payAmount: args.dbSalary,
-                    forDate: new Date(parseInt(args.clockedInTime)).toLocaleDateString()
+                    forDate: new Date(parseInt(args.clockedInTime)).toLocaleDateString("en-US", {timeZone: "America/Denver"})
                   },
                 },
               },

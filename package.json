@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/dsamuelson/clock_in_and_out#readme",
   "dependencies": {
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.6.0"
   }
 }

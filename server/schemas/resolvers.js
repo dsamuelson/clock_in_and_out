@@ -64,6 +64,7 @@ const resolvers = {
                 clockedIn: true,
                 $push: {
                   hoursWorked: {
+                    clockedID: args.clockedID,
                     clockedInTime: args.clockedInTime,
                     payAmount: args.dbSalary,
                     userTimeZone: args.userTimeZone,
@@ -77,7 +78,7 @@ const resolvers = {
             updatedUser = await User.findOneAndUpdate(
               {_id: context.user._id },
               {
-                currentHWId: updatedUser.hoursWorked[updatedUser.hoursWorked.length - 1]._id.toString()
+                currentHWId: updatedUser.hoursWorked[updatedUser.hoursWorked.length - 1].clockedID.toString()
               },
               {new: true}
             )
@@ -96,7 +97,7 @@ const resolvers = {
             .select('-__v -password')
             
             updatedUser = await User.findOneAndUpdate(
-              {_id: context.user._id, "hoursWorked._id": args.clockedId},
+              {_id: context.user._id, "hoursWorked.clockedID": args.clockedId},
               {
                   "hoursWorked.$.clockedOutTime": args.clockedOutTime
               },

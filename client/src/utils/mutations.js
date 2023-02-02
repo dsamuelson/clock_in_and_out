@@ -33,8 +33,8 @@ export const ADD_USER = gql`
 `;
 
 export const CLOCK_IN = gql`
-  mutation clockIn($clockedInTime: String!, $dbSalary: String!, $userTimeZone: String!) {
-    clockIn(clockedInTime: $clockedInTime, dbSalary: $dbSalary, userTimeZone: $userTimeZone) {
+  mutation clockIn($clockedID: String!, $clockedInTime: String!, $dbSalary: String!, $userTimeZone: String!) {
+    clockIn(clockedID: $clockedID, clockedInTime: $clockedInTime, dbSalary: $dbSalary, userTimeZone: $userTimeZone) {
       _id
     }
   }

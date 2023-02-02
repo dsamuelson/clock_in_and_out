@@ -1,6 +1,10 @@
 const { Schema } = require('mongoose');
 
 const WorkingHoursSchema = new Schema ({
+    clockedID: {
+        type: String,
+        required: false
+    },
     clockedInTime: {
         type: String,
         required: false

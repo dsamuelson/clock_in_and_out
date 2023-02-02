@@ -31,7 +31,6 @@ const Home = () => {
     });
 
     const handleSalarySubmit = async (salaryAmount) => {
-        dbMeDataRefetch()
         try {
             await sendDBSalary({
                 variables: {
@@ -45,10 +44,10 @@ const Home = () => {
     }
 
     const handleClockIn = async (dbInTime) => {
-        dbMeDataRefetch()
         try {
             await sendClockIn({
                 variables: {
+                    clockedID: crypto.randomUUID() + Date.now(),
                     clockedInTime: dbInTime.getTime().toString(),
                     dbSalary: parseFloat(salary).toFixed(2),
                     userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -61,7 +60,6 @@ const Home = () => {
     }
 
     const handleClockOut = async (dbOutTime) => {
-        dbMeDataRefetch()
         try {
             await sendClockOut({
                 variables: {
